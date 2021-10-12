@@ -1,0 +1,194 @@
+type TKETSFactory @entity {
+  # factory address
+  id: ID!
+
+  # event info
+  eventCount: Int!
+
+  # total volume
+  totalVolumeTFUEL: BigDecimal!
+
+  # total ticket info
+  totalTicketMint: BigInt!
+  totalTicketTransfers: BigInt!
+  totalTicketStamps: BigInt!
+
+  # transactions
+  txCount: BigInt!
+}
+
+type Event @entity {
+  #eventID  
+  id: ID!
+
+  # mirrored from the smart contract
+  owner: Bytes!
+  timeStart: BigInt!
+  timeEnd: BigInt!
+  status: Boolean!
+  tickets: [Ticket!]! @derivedFrom(field: "event")
+  stampers: [Bytes!]!
+
+  # event specific volume
+  tradeVolume: BigDecimal!
+
+  # event creation stats
+  createdAtTimestamp: BigInt!
+  createdAtBlockNumber: BigInt!
+
+  # transactions across all Tickets
+  txCount: BigInt!
+
+  # event data across all Tickets
+  eventDayData: [EventDayData!]! @derivedFrom(field: "event")
+}
+
+type Ticket @entity {
+  # ticket address
+  id: ID!
+
+  event: Event!
+
+  # mirrored from the smart contract
+  maxTickets: BigInt!
+  ticketPrice: BigInt!
+  ticketStartTime: BigInt!
+  ticketEndTime: BigInt!
+  acceptDonations: Boolean!
+  uri: String!
+
+  # ticket creation stats
+  createdAtTimestamp: BigInt!
+  createdAtBlockNumber: BigInt!
+
+  # List of all minted ticket tokens
+  ticketTokens: [TicketToken!]! @derivedFrom(field: "ticket")
+
+  # used counting number of tickets minted
+  totalSupply: BigInt!
+
+  # token specific volume
+  saleVolume: BigDecimal!
+
+  # balance
+  balanceTfuel: BigDecimal!
+
+  # transactions across all pairs
+  txCount: BigInt!
+
+  # derived fields
+  ticketHourData: [TicketHourData!]! @derivedFrom(field: "ticket")
+  mints: [Mint!]! @derivedFrom(field: "ticket")
+  transfers: [Transfer!]! @derivedFrom(field: "ticket")
+  stamps: [Stamp!]! @derivedFrom(field: "ticket")
+}
+
+type TicketToken @entity {
+  # '{ticketAddress}#{tokenID}' in string format
+  id: ID!
+  event: Event!
+  ticket: Ticket!
+  tokenID: BigInt!
+  tokenURI: String!
+
+  owner: User!
+  stamped: Boolean!
+
+  mints: [Mint!]! @derivedFrom(field: "ticketToken")
+  transfers: [Transfer!]! @derivedFrom(field: "ticketToken")
+  stamps: [Stamp!]! @derivedFrom(field: "ticketToken")
+}
+
+type User @entity {
+  id: ID!
+  ownedTokens: [TicketToken!]! @derivedFrom(field: "owner")
+}
+
+type Transaction @entity {
+  id: ID! # txn hash
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  # This is not the reverse of Mint.transaction; it is only used to
+  # track incomplete mints (similar for transfers and stamps)
+  mints: [Mint!]!
+  transfers: [Transfer!]!
+  stamps: [Stamp!]!
+}
+
+type Mint @entity {
+  # transaction hash + "-" + index in mints Transaction array
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  ticket: Ticket!
+  ticketToken: TicketToken!
+
+  to: Bytes
+}
+
+type Transfer @entity {
+  # transaction hash + "-" + index in mints Transaction array
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  ticket: Ticket!
+  ticketToken: TicketToken!
+
+  from: Bytes!
+  to: Bytes!
+}
+
+type Stamp @entity {
+  # transaction hash + "-" + index in mints Transaction array
+  id: ID!
+  transaction: Transaction!
+  timestamp: BigInt! # need this to pull recent txns for specific token or pair
+  ticket: Ticket!
+  ticketToken: TicketToken!
+}
+
+type EventDayData @entity {
+  id: ID!
+  date: Int!
+  event: Event!
+
+  # volume stats
+  dailyVolume: BigDecimal!
+  dailyTxns: BigInt!
+
+  tradeVolume: BigDecimal!
+  txCount: BigInt!
+}
+
+type TicketHourData @entity {
+  id: ID!
+  hourStartUnix: Int! # unix timestamp for start of hour
+  ticket: Ticket!
+
+  # total number of tickets minted
+  totalSupply: BigInt!
+
+  # volume stats
+  hourlyVolume: BigDecimal!
+  hourlyTxns: BigInt!
+
+  saleVolume: BigDecimal!
+  txCount: BigInt!
+
+  balanceTfuel: BigDecimal!
+}
+
+type TKETSDayData @entity {
+  id: ID!
+  date: Int! # timestamp rounded to current day by dividing by 86400
+
+  dailyVolumeTFUEL: BigDecimal!
+  dailyTxns: BigInt!
+
+  # event info
+  eventCount: Int!
+
+  # total volume
+  totalVolumeTFUEL: BigDecimal!
+  txCount: BigInt!
+}
