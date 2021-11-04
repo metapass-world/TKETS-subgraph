@@ -103,9 +103,9 @@ export function handleTransfer(event: Transfer): void {
   transaction.save()
 
   // update day entities
-  updateEventDayData(eventId, event)
-  updateTicketHourData(event)
-  updateTKETSDayData(event)
+  updateEventDayData(ZERO_BD, eventId, event)
+  updateTicketHourData(ZERO_BD, event)
+  updateTKETSDayData(ZERO_BD, event)
 }
 
 export function handleMint(event: TicketMint): void {
@@ -135,7 +135,7 @@ export function handleMint(event: TicketMint): void {
 
   // update txn counts and sale volumn
   ticket.totalSupply = ticket.totalSupply.plus(ONE_BI)
-  let ticketSaleAmount = convertTfuelToDecimal(event.transaction.value)
+  let ticketSaleAmount = convertTfuelToDecimal(ticket.ticketPrice)
   ticket.saleVolume = ticket.saleVolume.plus(ticketSaleAmount)
   ticket.txCount = ticket.txCount.plus(ONE_BI)
   ticket.balanceTfuel = ticket.balanceTfuel.plus(ticketSaleAmount)
@@ -188,9 +188,9 @@ export function handleMint(event: TicketMint): void {
   transaction.save()
 
   // update day entities
-  updateEventDayData(eventId, event)
-  updateTicketHourData(event)
-  updateTKETSDayData(event)
+  updateEventDayData(ticketSaleAmount, eventId, event)
+  updateTicketHourData(ticketSaleAmount, event)
+  updateTKETSDayData(ticketSaleAmount, event)
 }
 
 export function handleStamp(event: TicketStamped): void {
@@ -263,9 +263,9 @@ export function handleStamp(event: TicketStamped): void {
   transaction.save()
 
   // update day entities
-  updateEventDayData(eventId, event)
-  updateTicketHourData(event)
-  updateTKETSDayData(event)
+  updateEventDayData(ZERO_BD, eventId, event)
+  updateTicketHourData(ZERO_BD, event)
+  updateTKETSDayData(ZERO_BD, event)
 }
 
 export function handleRefund(event: TicketRefund): void {

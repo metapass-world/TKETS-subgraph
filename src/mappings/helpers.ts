@@ -55,7 +55,7 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
 }
 
 export function convertEventIdToString(eventId: BigInt): string {
-  return eventId.toHexString().slice(2)
+  return eventId.toHexString().slice(2).padStart(40, '0')
 }
 
 export function equalToZero(value: BigDecimal): boolean {

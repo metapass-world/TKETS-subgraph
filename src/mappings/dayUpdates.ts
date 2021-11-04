@@ -3,7 +3,7 @@ import { BigDecimal, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { Event, Ticket, TKETSFactory, TicketHourData, TKETSDayData, EventDayData } from '../../generated/schema'
 import { convertTfuelToDecimal, FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from './helpers'
 
-export function updateTKETSDayData(event: ethereum.Event): TKETSDayData | null {
+export function updateTKETSDayData(ticketSaleValue: BigDecimal, event: ethereum.Event): TKETSDayData | null {
   let tkets = TKETSFactory.load(FACTORY_ADDRESS)
   // safety check
   if (tkets === null) {
@@ -25,14 +25,14 @@ export function updateTKETSDayData(event: ethereum.Event): TKETSDayData | null {
   tketsDayData.txCount = tkets.txCount
   tketsDayData.totalVolumeTFUEL = tkets.totalVolumeTFUEL
   tketsDayData.eventCount = tkets.eventCount
-  tketsDayData.dailyVolumeTFUEL = tketsDayData.dailyVolumeTFUEL.plus(convertTfuelToDecimal(event.transaction.value))
+  tketsDayData.dailyVolumeTFUEL = tketsDayData.dailyVolumeTFUEL.plus(ticketSaleValue)
   tketsDayData.dailyTxns = tketsDayData.dailyTxns.plus(ONE_BI)
   tketsDayData.save()
 
   return tketsDayData as TKETSDayData
 }
 
-export function updateTicketHourData(event: ethereum.Event): TicketHourData | null {
+export function updateTicketHourData(ticketSaleValue: BigDecimal, event: ethereum.Event): TicketHourData | null {
   let timestamp = event.block.timestamp.toI32()
   let hourIndex = timestamp / 3600 // get unique hour within unix history
   let hourStartUnix = hourIndex * 3600 // want the rounded effect
@@ -60,7 +60,7 @@ export function updateTicketHourData(event: ethereum.Event): TicketHourData | nu
   }
 
   ticketHourData.totalSupply = ticket.totalSupply
-  ticketHourData.hourlyVolume = ticketHourData.hourlyVolume.plus(convertTfuelToDecimal(event.transaction.value))
+  ticketHourData.hourlyVolume = ticketHourData.hourlyVolume.plus(ticketSaleValue)
   ticketHourData.hourlyTxns = ticketHourData.hourlyTxns.plus(ONE_BI)
   ticketHourData.balanceTfuel = ticket.balanceTfuel
   ticketHourData.saleVolume = ticket.saleVolume
@@ -70,7 +70,7 @@ export function updateTicketHourData(event: ethereum.Event): TicketHourData | nu
   return ticketHourData as TicketHourData
 }
 
-export function updateEventDayData(eventId: string, event: ethereum.Event): EventDayData | null {
+export function updateEventDayData(ticketSaleValue: BigDecimal, eventId: string, event: ethereum.Event): EventDayData | null {
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
   let dayStartTimestamp = dayID * 86400
@@ -86,6 +86,7 @@ export function updateEventDayData(eventId: string, event: ethereum.Event): Even
   let eventDayData = EventDayData.load(dayEventID)
   if (eventDayData === null) {
     eventDayData = new EventDayData(dayEventID)
+    eventDayData.event = eventId
     eventDayData.date = dayStartTimestamp
     eventDayData.dailyTxns = ZERO_BI
     eventDayData.dailyVolume = ZERO_BD
@@ -93,7 +94,7 @@ export function updateEventDayData(eventId: string, event: ethereum.Event): Even
     eventDayData.txCount = ZERO_BI
   }
 
-  eventDayData.dailyVolume = eventDayData.dailyVolume.plus(convertTfuelToDecimal(event.transaction.value))
+  eventDayData.dailyVolume = eventDayData.dailyVolume.plus(ticketSaleValue)
   eventDayData.dailyTxns = eventDayData.dailyTxns.plus(ONE_BI)
   eventDayData.tradeVolume = eventSaved.tradeVolume
   eventDayData.txCount = eventSaved.txCount

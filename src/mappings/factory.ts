@@ -88,9 +88,12 @@ export function handleStamperAdd(event: StamperAdd): void {
     return
   }
 
-  eventSaved.stampers.concat([event.params.stamperAddress])
-  // save updated values
-  eventSaved.save()
+  // check if stamper is already added
+  if (!eventSaved.stampers.includes(event.params.stamperAddress)) {
+    eventSaved.stampers = eventSaved.stampers.concat([event.params.stamperAddress])
+    // save updated values
+    eventSaved.save()
+  }
 }
 
 export function handleStamperRemove(event: StamperAdd): void {
@@ -111,7 +114,8 @@ export function handleStamperRemove(event: StamperAdd): void {
   }
 
   let stamperIndex = eventSaved.stampers.indexOf(event.params.stamperAddress)
-  eventSaved.stampers.splice(stamperIndex, 1)
+  eventSaved.stampers = eventSaved.stampers.slice(0, stamperIndex).concat(eventSaved.stampers.slice(stamperIndex + 1));
+  // eventSaved.stampers.splice(stamperIndex, 1)
   // save updated values
   eventSaved.save()
 }
@@ -169,6 +173,7 @@ export function handleTicketCreate(event: TicketCreate): void {
   newTicket.acceptDonations = event.params.acceptDonations
   // newTicket.uri = fetchTicketURI(event.params.ticketAddress)
   newTicket.uri = event.params.uri
+  newTicket.uriHash = event.params.uriHash
 
   // newTicket.totalSupply = fetchTicketSupply(event.params.ticketAddress)
   newTicket.totalSupply = ZERO_BI

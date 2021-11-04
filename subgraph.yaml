@@ -8,9 +8,9 @@ dataSources:
     name: TKETS
     network: theta-testnet
     source:
-      address: '0x03a1B246Ee3b1c196bD0a0513bA025eAf90A3eD0'
+      address: '0x92e91F50C7F9D4a2f26D65C772a0B79dB46fDA66'
       abi: EventFactory
-      startBlock: 12670000
+      startBlock: 13086742
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -33,7 +33,7 @@ dataSources:
           handler: handleStamperAdd
         - event: StamperRemove(indexed uint160,indexed address)
           handler: handleStamperRemove
-        - event: TicketCreate(indexed address,indexed uint160,indexed address,string,uint256,uint256,uint256,uint256,bool)
+        - event: TicketCreate(indexed address,indexed uint160,indexed address,string,bytes32,uint256,uint256,uint256,uint256,bool)
           handler: handleTicketCreate
         - event: OwnershipTransferred(indexed uint160,indexed address,indexed address)
           handler: handleOwnershipTransferred

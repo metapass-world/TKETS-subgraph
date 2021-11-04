@@ -17,6 +17,11 @@
         "type": "string"
       },
       {
+        "internalType": "bytes32",
+        "name": "_uriHash",
+        "type": "bytes32"
+      },
+      {
         "components": [
           {
             "internalType": "uint256",
