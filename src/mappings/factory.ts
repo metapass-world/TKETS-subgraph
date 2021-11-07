@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { log } from '@graphprotocol/graph-ts'
-import { TicketCreate, EventCreate, StamperAdd, StamperRemove, OwnershipTransferred, EventCancel } from '../../generated/TKETS/EventFactory'
+import { TicketCreate, EventCreate, StamperAdd, StamperRemove, OwnershipTransferred, EventCancel, CommissionRateChange } from '../../generated/TKETS/EventFactory'
 import { Event, Ticket, TKETSFactory } from '../../generated/schema'
 import { Ticket as TicketTemplate } from '../../generated/templates'
 import {
@@ -21,6 +21,7 @@ export function handleEventCreate(event: EventCreate): void {
   if (factory === null) {
     factory = new TKETSFactory(FACTORY_ADDRESS)
     factory.eventCount = 0
+    factory.commissionRate = 0
     factory.totalVolumeTFUEL = ZERO_BD
     factory.totalTicketMint = ZERO_BI
     factory.totalTicketStamps = ZERO_BI
@@ -45,6 +46,20 @@ export function handleEventCreate(event: EventCreate): void {
 
   // save updated values
   newEvent.save()
+  factory.save()
+}
+
+export function handleCommissionRateChange(event: CommissionRateChange): void {
+  // load factory (create if first exchange)
+  let factory = TKETSFactory.load(FACTORY_ADDRESS)
+
+  // safety check
+  if (factory === null) {
+    return
+  }
+
+  factory.commissionRate = event.params.newCommissionRate
+  
   factory.save()
 }
 

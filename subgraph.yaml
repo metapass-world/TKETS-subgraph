@@ -8,9 +8,9 @@ dataSources:
     name: TKETS
     network: theta-testnet
     source:
-      address: '0x92e91F50C7F9D4a2f26D65C772a0B79dB46fDA66'
+      address: '0xE0283685F0bac93BcEAd2Dd26b758B813Af2c50A'
       abi: EventFactory
-      startBlock: 13086742
+      startBlock: 13125235
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
@@ -25,6 +25,8 @@ dataSources:
         - name: Ticket
           file: ./abis/Ticket.json
       eventHandlers:
+        - event: CommissionRateChange(indexed uint256)
+          handler: handleCommissionRateChange
         - event: EventCreate(indexed address,indexed uint160,uint256,uint256)
           handler: handleEventCreate
         - event: EventCancel(indexed uint160)

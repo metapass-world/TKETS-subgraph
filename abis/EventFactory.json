@@ -9,6 +9,19 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "newCommissionRate",
+        "type": "uint256"
+      }
+    ],
+    "name": "CommissionRateChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint160",
         "name": "eventId",
         "type": "uint160"
@@ -370,6 +383,11 @@
     "constant": true
   },
   {
+    "stateMutability": "payable",
+    "type": "receive",
+    "payable": true
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -378,6 +396,13 @@
       }
     ],
     "name": "setCommissionRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawCommissions",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
