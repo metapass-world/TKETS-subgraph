@@ -6,9 +6,9 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: TKETS
-    network: theta-testnet
+    network: theta-mainnet
     source:
-      address: '0x607601797ed17CF4D9a149240Db53F128cb25a13'
+      address: '0x53D416147e0c016b561c22b462BADa4ec2BA9958'
       abi: EventFactory
       startBlock: 13164336
     mapping:
@@ -42,7 +42,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Ticket
-    network: theta-testnet
+    network: theta-mainnet
     source:
       abi: Ticket
     mapping:
