@@ -9,7 +9,7 @@ type TKETSFactory @entity {
   totalVolumeTFUEL: BigDecimal!
 
   #commission:
-  commissionRate: Int!
+  commissionRate: BigInt!
 
   # total ticket info
   totalTicketMint: BigInt!

@@ -21,7 +21,7 @@ export function handleEventCreate(event: EventCreate): void {
   if (factory === null) {
     factory = new TKETSFactory(FACTORY_ADDRESS)
     factory.eventCount = 0
-    factory.commissionRate = 0
+    factory.commissionRate = ZERO_BI
     factory.totalVolumeTFUEL = ZERO_BD
     factory.totalTicketMint = ZERO_BI
     factory.totalTicketStamps = ZERO_BI
