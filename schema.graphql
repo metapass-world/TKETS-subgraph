@@ -60,6 +60,7 @@ type Ticket @entity {
   acceptDonations: Boolean!
   uri: String!
   uriHash: Bytes!
+  useTokenIDInURI: Boolean!
 
   # ticket creation stats
   createdAtTimestamp: BigInt!

@@ -159,6 +159,12 @@
       },
       {
         "indexed": false,
+        "internalType": "bool",
+        "name": "useTokenIDInURI",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "maxTickets",
         "type": "uint256"
@@ -505,6 +511,11 @@
         "internalType": "bytes32",
         "name": "uriHash",
         "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "useTokenIDInURI",
+        "type": "bool"
       },
       {
         "components": [

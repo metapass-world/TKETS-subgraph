@@ -189,7 +189,8 @@ export function handleTicketCreate(event: TicketCreate): void {
   // newTicket.uri = fetchTicketURI(event.params.ticketAddress)
   newTicket.uri = event.params.uri
   newTicket.uriHash = event.params.uriHash
-
+  newTicket.useTokenIDInURI = event.params.useTokenIDInURI
+  
   // newTicket.totalSupply = fetchTicketSupply(event.params.ticketAddress)
   newTicket.totalSupply = ZERO_BI
   newTicket.balanceTfuel = ZERO_BD
