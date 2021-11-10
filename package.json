@@ -9,7 +9,7 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy tkets-core --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-local": "graph deploy tkets-core --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
+    "deploy-local": "graph deploy tkets-core --ipfs https://$DOCKER_IPFS_USER:$DOCKER_IPFS_PASSWORD@$DOCKER_IPFS_HOST --node http://127.0.0.1:8020"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.22.1",
