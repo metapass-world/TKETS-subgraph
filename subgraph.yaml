@@ -8,9 +8,9 @@ dataSources:
     name: TKETS
     network: theta-testnet
     source:
-      address: '0xE0283685F0bac93BcEAd2Dd26b758B813Af2c50A'
+      address: '0x607601797ed17CF4D9a149240Db53F128cb25a13'
       abi: EventFactory
-      startBlock: 13125235
+      startBlock: 13164336
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
