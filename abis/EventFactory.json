@@ -416,6 +416,60 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferTKETSOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint160",
+        "name": "eventId",
+        "type": "uint160"
+      },
+      {
+        "internalType": "address",
+        "name": "eventOwner",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "timeStart",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timeEnd",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct FactoryStructs.EventMetadata",
+        "name": "_metadata",
+        "type": "tuple"
+      }
+    ],
+    "name": "forceCreateEvent",
+    "outputs": [
+      {
+        "internalType": "uint160",
+        "name": "uid",
+        "type": "uint160"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "components": [
           {
             "internalType": "uint256",
@@ -551,6 +605,24 @@
       }
     ],
     "name": "createTicket",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint160",
+        "name": "eventId",
+        "type": "uint160"
+      },
+      {
+        "internalType": "contract Ticket",
+        "name": "ticket",
+        "type": "address"
+      }
+    ],
+    "name": "forceCreateTicketFromAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
