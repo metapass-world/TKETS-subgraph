@@ -11,6 +11,7 @@ import {
   TicketToken,
 } from '../../generated/schema'
 import { Ticket as TicketContract, TicketMint, TicketStamped, Transfer, WithdrawBalance, TicketRefund } from '../../generated/templates/Ticket/Ticket'
+import { ChangeRefundPrice, ChangeTicketPrice, DepositBalance } from '../../generated/templates/Ticket_v1_1/Ticket'
 import { updateEventDayData, updateTKETSDayData, updateTicketHourData } from './dayUpdates'
 import {
   ADDRESS_ZERO,
@@ -276,7 +277,7 @@ export function handleRefund(event: TicketRefund): void {
   }
 
   // update balance
-  ticket.balanceTfuel = ticket.balanceTfuel.minus(convertTfuelToDecimal(ticket.ticketPrice))
+  ticket.balanceTfuel = ticket.balanceTfuel.minus(convertTfuelToDecimal(ticket.refundPrice))
 
   // save entities
   ticket.save()
@@ -291,6 +292,48 @@ export function handleWithdraw(event: WithdrawBalance): void {
 
   // update balance
   ticket.balanceTfuel = ZERO_BD
+
+  // save entities
+  ticket.save()
+}
+
+export function handleChangeTicketPrice(event: ChangeTicketPrice): void {
+  let ticket = Ticket.load(event.address.toHex())
+  // safety check
+  if (ticket === null) {
+    return
+  }
+
+  // update balance
+  ticket.ticketPrice = event.params.newTicketPrice
+
+  // save entities
+  ticket.save()
+}
+
+export function handleChangeRefundPrice(event: ChangeRefundPrice): void {
+  let ticket = Ticket.load(event.address.toHex())
+  // safety check
+  if (ticket === null) {
+    return
+  }
+
+  // update balance
+  ticket.refundPrice = event.params.newRefundPrice
+
+  // save entities
+  ticket.save()
+}
+
+export function handleDeposit(event: DepositBalance): void {
+  let ticket = Ticket.load(event.address.toHex())
+  // safety check
+  if (ticket === null) {
+    return
+  }
+
+  // update balance
+  ticket.balanceTfuel = ticket.balanceTfuel.plus(convertTfuelToDecimal(event.params.depositAmount))
 
   // save entities
   ticket.save()

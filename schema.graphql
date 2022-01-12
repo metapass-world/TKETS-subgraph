@@ -61,6 +61,9 @@ type Ticket @entity {
   uri: String!
   uriHash: Bytes!
   useTokenIDInURI: Boolean!
+  
+  refundPrice: BigInt!
+  allowRefunds: Boolean!
 
   # ticket creation stats
   createdAtTimestamp: BigInt!

@@ -1,6 +1,12 @@
 [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -191,6 +197,12 @@
         "indexed": false,
         "internalType": "bool",
         "name": "acceptDonations",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "allowRefunds",
         "type": "bool"
       }
     ],
@@ -524,26 +536,6 @@
         "type": "uint160"
       }
     ],
-    "name": "isEventWithdrawable",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "withdrawable",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function",
-    "constant": true
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint160",
-        "name": "eventId",
-        "type": "uint160"
-      }
-    ],
     "name": "cancelEvent",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -572,15 +564,15 @@
         "type": "bool"
       },
       {
+        "internalType": "uint256",
+        "name": "_ticketPrice",
+        "type": "uint256"
+      },
+      {
         "components": [
           {
             "internalType": "uint256",
             "name": "maxTickets",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "ticketPrice",
             "type": "uint256"
           },
           {
@@ -596,6 +588,11 @@
           {
             "internalType": "bool",
             "name": "acceptDonations",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "allowRefunds",
             "type": "bool"
           }
         ],

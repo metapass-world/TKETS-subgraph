@@ -1,8 +1,9 @@
 /* eslint-disable prefer-const */
 import { log } from '@graphprotocol/graph-ts'
-import { TicketCreate, EventCreate, StamperAdd, StamperRemove, OwnershipTransferred, EventCancel, CommissionRateChange } from '../../generated/TKETS/EventFactory'
+import { TicketCreate as TicketCreateV1, EventCreate, StamperAdd, StamperRemove, OwnershipTransferred, EventCancel, CommissionRateChange } from '../../generated/TKETS/EventFactory'
+import { TicketCreate as TicketCreateV1_1 } from '../../generated/TKETS_v1.1/EventFactory'
 import { Event, Ticket, TKETSFactory } from '../../generated/schema'
-import { Ticket as TicketTemplate } from '../../generated/templates'
+import { Ticket_v1 as TicketTemplate_v1, Ticket_v1_1 as TicketTemplate_v1_1 } from '../../generated/templates'
 import {
   FACTORY_ADDRESS,
   // fetchEventMetadata,
@@ -157,7 +158,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
   eventSaved.save()
 }
 
-export function handleTicketCreate(event: TicketCreate): void {
+export function handleTicketCreateV1(event: TicketCreateV1): void {
   // load factory (create if first exchange)
   let factory = TKETSFactory.load(FACTORY_ADDRESS)
   let eventSaved = Event.load(convertEventIdToString(event.params.eventId))
@@ -190,6 +191,8 @@ export function handleTicketCreate(event: TicketCreate): void {
   newTicket.uri = event.params.uri
   newTicket.uriHash = event.params.uriHash
   newTicket.useTokenIDInURI = event.params.useTokenIDInURI
+  newTicket.refundPrice = event.params.ticketPrice
+  newTicket.allowRefunds = false
   
   // newTicket.totalSupply = fetchTicketSupply(event.params.ticketAddress)
   newTicket.totalSupply = ZERO_BI
@@ -199,7 +202,58 @@ export function handleTicketCreate(event: TicketCreate): void {
   newTicket.txCount = ZERO_BI
 
   // create the tracked contract based on the template
-  TicketTemplate.create(event.params.ticketAddress)
+  TicketTemplate_v1.create(event.params.ticketAddress)
+
+  // save updated values
+  newTicket.save()
+  factory.save()
+}
+
+export function handleTicketCreateV1_1(event: TicketCreateV1_1): void {
+  // load factory (create if first exchange)
+  let factory = TKETSFactory.load(FACTORY_ADDRESS)
+  let eventSaved = Event.load(convertEventIdToString(event.params.eventId))
+
+  if (factory === null) {
+    return
+  }
+
+  if (eventSaved === null) {
+    return
+  }
+
+  // create the ticket
+  let newTicket = new Ticket(event.params.ticketAddress.toHexString())
+  newTicket.createdAtBlockNumber = event.block.number
+  newTicket.createdAtTimestamp = event.block.timestamp
+  newTicket.event = eventSaved.id
+  // let ticketMetadata = fetchTicketMetadata(event.params.ticketAddress)
+  // newTicket.maxTickets = ticketMetadata.maxTickets
+  // newTicket.ticketPrice = ticketMetadata.ticketPrice
+  // newTicket.ticketStartTime = ticketMetadata.ticketStartTime
+  // newTicket.ticketEndTime = ticketMetadata.ticketEndTime
+  // newTicket.acceptDonations = ticketMetadata.acceptDonations
+  newTicket.maxTickets = event.params.maxTickets
+  newTicket.ticketPrice = event.params.ticketPrice
+  newTicket.ticketStartTime = event.params.ticketStartTime
+  newTicket.ticketEndTime = event.params.ticketEndTime
+  newTicket.acceptDonations = event.params.acceptDonations
+  // newTicket.uri = fetchTicketURI(event.params.ticketAddress)
+  newTicket.uri = event.params.uri
+  newTicket.uriHash = event.params.uriHash
+  newTicket.useTokenIDInURI = event.params.useTokenIDInURI
+  newTicket.refundPrice = event.params.ticketPrice
+  newTicket.allowRefunds = event.params.allowRefunds
+  
+  // newTicket.totalSupply = fetchTicketSupply(event.params.ticketAddress)
+  newTicket.totalSupply = ZERO_BI
+  newTicket.balanceTfuel = ZERO_BD
+
+  newTicket.saleVolume = ZERO_BD
+  newTicket.txCount = ZERO_BI
+
+  // create the tracked contract based on the template
+  TicketTemplate_v1_1.create(event.params.ticketAddress)
 
   // save updated values
   newTicket.save()

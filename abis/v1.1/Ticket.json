@@ -27,15 +27,15 @@
         "type": "bool"
       },
       {
+        "internalType": "uint256",
+        "name": "_ticketPrice",
+        "type": "uint256"
+      },
+      {
         "components": [
           {
             "internalType": "uint256",
             "name": "maxTickets",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "ticketPrice",
             "type": "uint256"
           },
           {
@@ -51,6 +51,11 @@
           {
             "internalType": "bool",
             "name": "acceptDonations",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "allowRefunds",
             "type": "bool"
           }
         ],
@@ -110,6 +115,45 @@
       }
     ],
     "name": "ApprovalForAll",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newRefundPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "ChangeRefundPrice",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newTicketPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "ChangeTicketPrice",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "depositAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DepositBalance",
     "type": "event"
   },
   {
@@ -357,11 +401,6 @@
       },
       {
         "internalType": "uint256",
-        "name": "ticketPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
         "name": "ticketStartTime",
         "type": "uint256"
       },
@@ -373,6 +412,11 @@
       {
         "internalType": "bool",
         "name": "acceptDonations",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "allowRefunds",
         "type": "bool"
       }
     ],
@@ -406,6 +450,19 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "refundPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -507,6 +564,19 @@
         "internalType": "string",
         "name": "",
         "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ticketPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -617,6 +687,32 @@
     "inputs": [
       {
         "internalType": "uint256",
+        "name": "_newTicketPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeTicketPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newRefundPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "changeRefundPrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
         "name": "ticketId",
         "type": "uint256"
       }
@@ -693,6 +789,13 @@
     "name": "refundAll",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "depositBalance",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   }
 ]
