@@ -4,8 +4,8 @@ import { log, BigInt, BigDecimal, Address, ethereum } from '@graphprotocol/graph
 // import { ERC20SymbolBytes } from '../types/Factory/ERC20SymbolBytes'
 // import { ERC20NameBytes } from '../types/Factory/ERC20NameBytes'
 import { User, Event, Ticket } from '../../generated/schema'
-import { EventFactory as FactoryContract } from '../../generated/TKETS/EventFactory'
-import { Ticket as TicketContract } from '../../generated/TKETS/Ticket'
+import { EventFactory as FactoryContract } from '../../generated/TKETS_v1.1/EventFactory'
+// import { Ticket as TicketContract } from '../../generated/TKETS/Ticket'
 
 class TicketMetadata {
   maxTickets: BigInt; 

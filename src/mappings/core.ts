@@ -10,7 +10,7 @@ import {
   Stamp as StampEvent,
   TicketToken,
 } from '../../generated/schema'
-import { Ticket as TicketContract, TicketMint, TicketStamped, Transfer, WithdrawBalance, TicketRefund } from '../../generated/templates/Ticket/Ticket'
+import { Ticket as TicketContract, TicketMint, TicketStamped, Transfer, WithdrawBalance, TicketRefund } from '../../generated/templates/Ticket_v1_1/Ticket'
 import { ChangeRefundPrice, ChangeTicketPrice, DepositBalance } from '../../generated/templates/Ticket_v1_1/Ticket'
 import { updateEventDayData, updateTKETSDayData, updateTicketHourData } from './dayUpdates'
 import {
